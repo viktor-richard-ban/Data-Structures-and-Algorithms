@@ -1,5 +1,6 @@
 # Big O
-Big O time is the language and metric we use to describe the efficency of algorithms.
+Big O time is the language and metric we use to describe the efficency of algorithms. 
+Time complexity and space complexity measure how the speed of the algorithm or the extra memory an algorithm takes up, how two things change as the size of the input of the algorithm increases.
 
 
 ## Why is Big O Important in Industry?
@@ -22,7 +23,20 @@ Example: Array indexing
 
 ### O(log n): Logarihtmic time
 Algorithms with this complexity efficiently cut the problem size in half at each step.<br>
-Example: Binary search in a sorted array
+Example: Binary search in a sorted array<br>
+
+$log_{b}$ n = y if and only if $b^{y}$ = n
+
+In coding interviews we only use base 2 so:<br>
+ $log_{2}$ n = y if and only if $2^{y}$ = n
+
+When the input n doubles, y only increases by one:<br>
+$2^{0}$ = 1<br>
+$2^{1}$ = 2<br>
+$2^{2}$ = 4<br>
+$2^{3}$ = 8<br>
+$2^{4}$ = 16<br>
+$2^{5}$ = 32<br>
 
 ### O(n): Linear time
 The running time increases proportionally with the input size. If the input doubles, the time it takes to complete the operation also doubles.<br>
