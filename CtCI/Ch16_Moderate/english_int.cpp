@@ -1,10 +1,16 @@
 #include <string>
 #include <map>
+#include <list>
 #include <iostream>
 
 using namespace std;
 
-static map<int, string> dictionary = {
+static const list<pair<int, string>> units = {
+    {1000000000, "Billion"},
+    {1000000, "Million"},
+    {1000, "Thousand"}
+};
+static const map<int, string> dictionary = {
     {1, "One"},
     {2, "Two"},
     {3, "Three"},
@@ -34,63 +40,60 @@ static map<int, string> dictionary = {
     {90, "Ninety"},
 };
 
-string englishInt(int number);
-string parseRest(string rest) {
-    string formattedRest = englishInt(stoi(rest));
-    if (formattedRest != "" && stoi(rest) != 0) {
-        return " " + formattedRest;
+string convertBelowThousand(int number) {
+    string result = "";
+
+    if (number > 99) {
+        // over or equal to one hundred, but less than one thousand
+        string translation = dictionary.find(number / 100)->second;
+        result += translation;
+        result += " Hundred";
+        number %= 100;
+        if (number > 0) result+= " ";
     }
-    return "";
+    
+    if (number > 20) {
+        // out of dictionary boundaries
+        // drop last character, add 1 zero, parse it separately, we can find the result in the dictionary
+        string translation = dictionary.find((int)(number / 10) * 10)->second;
+        result += translation;
+        number %= 10;
+        if (number > 0) result+= " ";
+    }
+    
+    if (number > 0) {
+        // can be found in the dictionary
+        // simply convert it
+        string translation = dictionary.find(number)->second;
+        result += translation;
+    }
+
+    return result;
 }
 
 
-// Time: O(log n)
+// Time: O(log n)   // since the function processes each group of three digits
 // Space: O(log n)
 // n: number of characters in the input number
-// since we parse this input number character by character
 string englishInt(int number) {
     if (number == 0) return "Zero";
     
     string result = "";
-    string value = to_string(number);
     if (number < 0) {
         result += "Negative ";
         number = -number;
-        value = value.substr(1, value.size()-1);
     }
 
-    auto dictItem = dictionary.find(number);
-    if (number > 999) {
-        // thousand
-        // drop the last three characters, parse them separately
-        string first = value.substr(0, value.size()-3);
-        string rest = value.substr(value.size()-3, value.size()-1);
-
-        result += englishInt(stoi(first));
-        result += " Thousand";
-        result += parseRest(rest);
-    } else if (number > 99) {
-         // hundred
-         // drop last two characters, parse them separately
-        string first = value.substr(0, 1);
-        string rest = value.substr(1, value.size()-1);
-
-        result += englishInt(stoi(first));
-        result += " Hundred";
-        result += parseRest(rest);
-    } else if (number > 20) {
-        // out of dictionary boundaries
-        // drop last character, add 1 zero, parse it separately
-        string first = value.substr(0, 1);
-        first += "0";
-        dictItem = dictionary.find(stoi(first));
-        string rest = value.substr(1, value.size()-1);
-        result += dictItem->second;
-        result += parseRest(rest);
-    } else if (number > 0 && dictItem != dictionary.end()) {
-        // can be found in the dictionary
-        // simply parse it
-        result += dictItem->second;
+    for (const auto& unit : units) {
+        if (number >= unit.first) {
+            result += convertBelowThousand(number / unit.first) + " " + unit.second;
+            number %= unit.first;
+            if (number > 0) result+= " ";
+        }
+    }
+    
+    if (number > 0) {
+        result += convertBelowThousand(number);
     }
 
     return result;
