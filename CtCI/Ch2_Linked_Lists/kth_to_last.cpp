@@ -77,7 +77,9 @@ int main() {
 }
 
 /*
- Result of the code:
+Result of the code:
  
-
- */
+1 - 2 - 3 - 4 - 5
+2th to last: 3
+2th to last recursively: 3
+*/
