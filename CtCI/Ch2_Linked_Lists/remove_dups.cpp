@@ -16,12 +16,12 @@ void removeDups(Node* head) {
 
     set.insert(node->value);
     
-    while (current->next != nullptr) {
-        if (set.contains(current->next->value)) {
-            current->next = current->next->next;
+    while (node->next != nullptr) {
+        if (set.contains(node->next->value)) {
+            node->next = node->next->next;
         } else {
-            set.insert(current->next->value);
-            current = current->next;
+            set.insert(node->next->value);
+            node = node->next;
         }
     }
 }
@@ -48,5 +48,5 @@ int main() {
 /*
  Result of the code:
  
-1 2 
+2 1 
  */
