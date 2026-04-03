@@ -16,6 +16,22 @@ class ListNode {
 }
 
 // Time: O(n)
+// Time: O(n)
+func reverseList_recursive(_ head: ListNode?) -> ListNode? {
+    func reverse(_ prev: ListNode?, _ head: ListNode?) -> ListNode? {
+        let next = head?.next
+        head?.next = prev
+
+        if next == nil {
+            return head
+        }
+        return reverse(head, next)
+    }
+
+    return reverse(nil, head)
+}
+
+// Time: O(n)
 // Time: O(1)
 func reverseList(_ head: ListNode?) -> ListNode? {
     var current = head
@@ -36,7 +52,7 @@ first.next = second
 let third = ListNode(2)
 second.next = third
 
-var current: ListNode? = reverseList(first)
+var current: ListNode? = reverseList_recursive(first)
 while current != nil {
     print(current!.val)
     current = current?.next
