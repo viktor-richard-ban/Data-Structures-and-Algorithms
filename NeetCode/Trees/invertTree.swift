@@ -18,7 +18,7 @@ func invertTree(_ root: TreeNode?) -> TreeNode? {
 }
 
 // Time: O(n)
-// Space: O(n) - 
+// Space: O(n)
 func invertTree(_ root: TreeNode?) -> TreeNode? {
     guard let root else { return nil }
     var nodes: [TreeNode] = [root]
