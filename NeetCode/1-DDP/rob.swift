@@ -58,3 +58,17 @@ func rob(_ nums: [Int]) -> Int {
 
     return right
 }
+
+// Time: O(n)
+// Space: O(1)
+func rob(_ nums: [Int]) -> Int {
+    var left = 0, right = nums[0]
+
+    for i in 1..<nums.count {
+        let take = left + nums[i]
+        left = right
+        right = max(take, left)
+    }
+
+    return max(left, right)
+}
